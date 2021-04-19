@@ -1,0 +1,36 @@
+chipsy_arm:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+  # Position Controllers ---------------------------------------
+  column_to_base_joint_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: column_to_base_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+
+  upper_arm_to_column_joint_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: upper_arm_to_column_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+
+  lower_arm_to_upper_arm_joint_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: lower_arm_to_upper_arm_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+
+  wrist_roll_to_lower_arm_joint_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: wrist_roll_to_lower_arm_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+
+  right_eef_to_wrist_roll_joint_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: right_eef_to_wrist_roll_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+
+  left_eef_to_wrist_roll_joint_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: left_eef_to_wrist_roll_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}

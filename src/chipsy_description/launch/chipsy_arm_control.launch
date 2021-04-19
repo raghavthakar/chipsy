@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="x" default="0"/>
+	<arg name="y" default="0"/>
+	<arg name="z" default="0"/>
+
+  <arg name="world_name" default="basic"/>
+  <arg name="debug" default="false"/>
+  <arg name="gui" default="true"/>
+  <arg name="paused" default="false"/>
+  <arg name="verbose" default="true"/>
+
+  <!-- LOAD WORLD -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="paused" value="$(arg paused)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="verbose" value="$(arg verbose)"/>
+  </include>
+
+  <!-- LOAD ROBOT -->
+  <param name="robot_description" command="$(find xacro)/xacro $(find chipsy_description)/urdf/chipsy_arm_body.xacro"/>
+
+  <!-- SPAWN ROBOT -->
+  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+        args="-urdf -param robot_description -model chipsy_arm -x $(arg x) -y $(arg y) -z $(arg z)"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false" output="screen">
+    <remap from="/joint_states" to="/chipsy_arm/joint_states"/>
+  </node>
+
+  <node name="rviz" pkg="rviz" type="rviz"/>
+
+  <!-- LOAD JOI CONFIGURATION -->
+  <rosparam file="$(find chipsy_description)/config/chipsy_arm_control.yaml" command="load"/>
+
+  <!-- LOAD THE CONTROLLER -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" args="/chipsy_arm/column_to_base_joint_position_controller
+     /chipsy_arm/upper_arm_to_column_joint_position_controller /chipsy_arm/lower_arm_to_upper_arm_joint_position_controller
+     /chipsy_arm/wrist_roll_to_lower_arm_joint_position_controller /chipsy_arm/right_eef_to_wrist_roll_joint_position_controller
+     /chipsy_arm/left_eef_to_wrist_roll_joint_position_controller /chipsy_arm/joint_state_controller"/>
+
+</launch>

@@ -66,10 +66,12 @@
   <!--///////////////////////////////////////////////////////////////////////-->
 
   <!-- INERTIAL MACRO FOR ALL COMPONENTS -->
-  <xacro:macro name="base_inertial" params="mass">
+  <xacro:macro name="base_inertial" params="mass distance">
       <inertial>
+        <origin xyz="0 0 ${distance}" rpy="0 0 0"/>
       	<mass value="${mass}" />
-        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="0.5" iyz="0.0" izz="1.0" />
+        <!-- <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="0.5" iyz="0.0" izz="1.0" /> -->
+        <inertia ixx="${0.1*mass}" ixy="0.0" ixz="0.0" iyy="${0.05*mass}" iyz="0.0" izz="${0.1*mass}" />
       </inertial>
    </xacro:macro>
 
@@ -97,10 +99,10 @@
       </geometry>
     </collision>
 
-    <xacro:base_inertial mass="${base_mass}"/>
+    <xacro:base_inertial mass="${base_mass}" distance="${base_height/2}"/>
   </link>
 
-  <joint name="base_link_to_root_link" type="fixed">
+  <joint name="base_to_root_joint" type="fixed">
     <parent link="root_link"/>
     <child link="base_link"/>
   </joint>
@@ -124,16 +126,24 @@
       </geometry>
     </collision>
 
-    <xacro:base_inertial mass="${column_mass}"/>
+    <xacro:base_inertial mass="${column_mass}" distance="${column_length/2}"/>
   </link>
 
-  <joint name="column_link_to_base_link" type="revolute">
+  <joint name="column_to_base_joint" type="revolute">
     <origin xyz="0 0 ${base_height}" rpy="0 0 0"/>
     <limit upper="${PI}" lower="${-1*PI}" effort="40" velocity="1"/>
     <axis xyz="0 0 1" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="column_link"/>
   </joint>
+
+  <transmission name="column_to_base_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="column_to_base_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="column_to_base_actuator"/>
+  </transmission>
 
   <!--///////////////////////////////////////////////////////////////////////-->
 
@@ -154,16 +164,24 @@
       </geometry>
     </collision>
 
-    <xacro:base_inertial mass="${upper_arm_mass}"/>
+    <xacro:base_inertial mass="${upper_arm_mass}" distance="${upper_arm_length/2}"/>
   </link>
 
-  <joint name="upper_arm_link_to_column_link" type="revolute">
+  <joint name="upper_arm_to_column_joint" type="revolute">
     <origin xyz="0 0 ${column_length}" rpy="0 0 0"/>
     <limit upper="${PI}" lower="0" effort="20" velocity="1"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
     <parent link="column_link"/>
     <child link="upper_arm_link"/>
   </joint>
+
+  <transmission name="upper_arm_to_column_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="upper_arm_to_column_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="upper_arm_to_column_actuator"/>
+  </transmission>
 
   <!--///////////////////////////////////////////////////////////////////////-->
 
@@ -184,16 +202,24 @@
       </geometry>
     </collision>
 
-    <xacro:base_inertial mass="${lower_arm_mass}"/>
+    <xacro:base_inertial mass="${lower_arm_mass}" distance="${lower_arm_length/2}"/>
   </link>
 
-  <joint name="lower_arm_link_to_upper_arm_link" type="revolute">
+  <joint name="lower_arm_to_upper_arm_joint" type="revolute">
     <origin xyz="0 0 ${upper_arm_length}" rpy="0 0 0"/>
     <limit upper="${PI}" lower="0" effort="20" velocity="1"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
     <parent link="upper_arm_link"/>
     <child link="lower_arm_link"/>
   </joint>
+
+  <transmission name="lower_arm_to_upper_arm_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="lower_arm_to_upper_arm_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="lower_arm_to_upper_arm_actuator"/>
+  </transmission>
 
   <!--///////////////////////////////////////////////////////////////////////-->
 
@@ -214,16 +240,28 @@
       </geometry>
     </collision>
 
-    <xacro:base_inertial mass="${wrist_roll_mass}"/>
+    <xacro:base_inertial mass="${wrist_roll_mass}" distance="${wrist_roll_length/2}"/>
   </link>
 
-  <joint name="wrist_roll_link_to_upper_arm_link" type="revolute">
+  <joint name="wrist_roll_to_lower_arm_joint" type="revolute">
     <origin xyz="0 0 ${lower_arm_length}" rpy="0 0 0"/>
     <limit upper="${PI}" lower="${-1*PI}" effort="20" velocity="1"/>
     <axis xyz="0 0 1" rpy="0 0 0"/>
     <parent link="lower_arm_link"/>
     <child link="wrist_roll_link"/>
   </joint>
+
+  <transmission name="wrist_roll_to_lower_arm_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wrist_roll_to_lower_arm_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="wrist_roll_to_lower_arm_actuator"/>
+  </transmission>
+
+  <gazebo reference="wrist_roll_link">
+    <material>Gazebo/Red</material>
+  </gazebo>
 
   <!--///////////////////////////////////////////////////////////////////////-->
 
@@ -244,16 +282,24 @@
       </geometry>
     </collision>
 
-    <xacro:base_inertial mass="${eef_mass}"/>
+    <xacro:base_inertial mass="${eef_mass}" distance="${eef_length/2}"/>
   </link>
 
-  <joint name="right_eef_link_to_wrist_roll_link" type="prismatic">
+  <joint name="right_eef_to_wrist_roll_joint" type="prismatic">
     <origin xyz="0 ${wrist_roll_dia/2} ${wrist_roll_length}" rpy="0 0 0"/>
     <limit upper="${wrist_roll_dia/2-eef_width/2}" lower="${-wrist_roll_dia/2+eef_width/2}" effort="50" velocity="0.05"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
     <parent link="wrist_roll_link"/>
     <child link="right_eef_link"/>
   </joint>
+
+  <transmission name="right_eef_to_wrist_roll_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="right_eef_to_wrist_roll_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="right_eef_to_wrist_roll_actuator"/>
+  </transmission>
 
   <!--///////////////////////////////////////////////////////////////////////-->
 
@@ -274,14 +320,30 @@
       </geometry>
     </collision>
 
-    <xacro:base_inertial mass="${eef_mass}"/>
+    <xacro:base_inertial mass="${eef_mass}" distance="${eef_length/2}"/>
   </link>
 
-  <joint name="left_eef_link_to_wrist_roll_link" type="prismatic">
+  <joint name="left_eef_to_wrist_roll_joint" type="prismatic">
     <origin xyz="0 ${-wrist_roll_dia/2} ${wrist_roll_length}" rpy="0 0 0"/>
     <limit upper="${wrist_roll_dia/2-eef_width/2}" lower="${-wrist_roll_dia/2+eef_width/2}" effort="50" velocity="0.05"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
     <parent link="wrist_roll_link"/>
     <child link="left_eef_link"/>
   </joint>
+
+  <transmission name="left_eef_to_wrist_roll_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="left_eef_to_wrist_roll_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="left_eef_to_wrist_roll_actuator"/>
+  </transmission>
+
+  <!--///////////////////////////////////////////////////////////////////////-->
+
+  <!-- ROS CONTROL PLUGIN -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/>
+  </gazebo>
+
 </robot>
