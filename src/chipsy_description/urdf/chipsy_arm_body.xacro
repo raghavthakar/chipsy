@@ -1,0 +1,221 @@
+<?xml version="1.0"?>
+<robot name="chipsy_arm" xmlns:xacro="http://ros.org/wiki/xacro"
+            xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+            xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+            xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
+
+  <!--///////////////////////////////////////////////////////////////////////-->
+
+  <!-- GENERIC PROPERTIES USED IN THE ARM -->
+  <!-- BASE -->
+  <!-- along x axis -->
+  <xacro:property name="base_length" value="0.5"/>
+  <!-- along y axis -->
+  <xacro:property name="base_width" value="0.5"/>
+  <!-- along z axis -->
+  <xacro:property name="base_height" value="0.1"/>
+  <xacro:property name="base_mass" value="10"/>
+
+  <!-- COLUMN -->
+  <!-- along z axis -->
+  <xacro:property name="column_length" value="0.25"/>
+  <xacro:property name="column_dia" value="0.2"/>
+  <xacro:property name="column_mass" value="2"/>
+
+  <!-- UPPER ARM -->
+  <!-- along z axis -->
+  <xacro:property name="upper_arm_length" value="0.25"/>
+  <xacro:property name="upper_arm_dia" value="0.1"/>
+  <xacro:property name="upper_arm_mass" value="0.5"/>
+
+  <!-- LOWER ARM -->
+  <!-- along z axis -->
+  <xacro:property name="lower_arm_length" value="0.25"/>
+  <xacro:property name="lower_arm_dia" value="0.1"/>
+  <xacro:property name="lower_arm_mass" value="0.5"/>
+
+  <!-- WRIST ROLL LINK -->
+  <!-- along z axis -->
+  <xacro:property name="wrist_roll_length" value="0.05"/>
+  <xacro:property name="wrist_roll_dia" value="0.1"/>
+  <xacro:property name="wrist_roll_mass" value="0.1"/>
+
+  <xacro:property name="PI" value="3.141592653589793238"/>
+
+  <!--///////////////////////////////////////////////////////////////////////-->
+
+  <!-- COLOURS FOR MATERIAL -->
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+
+  <material name="black">
+    <color rgba ="0 0 0 1"/>
+  </material>
+
+  <material name="green">
+    <color rgba="0 1 0 1"/>
+  </material>
+
+  <!--///////////////////////////////////////////////////////////////////////-->
+
+  <!-- INERTIAL MACRO FOR ALL COMPONENTS -->
+  <xacro:macro name="base_inertial" params="mass">
+      <inertial>
+      	<mass value="${mass}" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="0.5" iyz="0.0" izz="1.0" />
+      </inertial>
+   </xacro:macro>
+
+  <!--///////////////////////////////////////////////////////////////////////-->
+
+  <!-- DUMMY ROOT LINK SO THAT BASE LINK CAN BE GIVEN SOME MASS -->
+  <link name="root_link"/>
+
+  <!--///////////////////////////////////////////////////////////////////////-->
+
+  <!-- BASE LINK IS THE LINK WHICH EVERYTHING IS ATTACHED TO -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 ${base_height/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${base_length} ${base_width} ${base_height}"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${base_height/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${base_length} ${base_width} ${base_height}"/>
+      </geometry>
+    </collision>
+
+    <xacro:base_inertial mass="${base_mass}"/>
+  </link>
+
+  <joint name="base_link_to_root_link" type="fixed">
+    <parent link="root_link"/>
+    <child link="base_link"/>
+  </joint>
+
+  <!--///////////////////////////////////////////////////////////////////////-->
+
+  <!-- COLUMN LINK IS A STANDING COLUMN THAT ROTATES ABOUT VERTICAL AXIS -->
+  <link name="column_link">
+    <visual>
+      <origin xyz="0 0 ${column_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${column_dia/2}" length="${column_length}"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${column_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${column_dia/2}" length="${column_length}"/>
+      </geometry>
+    </collision>
+
+    <xacro:base_inertial mass="${column_mass}"/>
+  </link>
+
+  <joint name="column_link_to_base_link" type="revolute">
+    <origin xyz="0 0 ${base_height}" rpy="0 0 0"/>
+    <limit upper="${PI}" lower="${-1*PI}" effort="40" velocity="1"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="column_link"/>
+  </joint>
+
+  <!--///////////////////////////////////////////////////////////////////////-->
+
+  <!-- UPPER ARM LINK -->
+  <link name="upper_arm_link">
+    <visual>
+      <origin xyz="0 0 ${upper_arm_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${upper_arm_dia/2}" length="${upper_arm_length}"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${upper_arm_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${upper_arm_dia/2}" length="${upper_arm_length}"/>
+      </geometry>
+    </collision>
+
+    <xacro:base_inertial mass="${upper_arm_mass}"/>
+  </link>
+
+  <joint name="upper_arm_link_to_column_link" type="revolute">
+    <origin xyz="0 0 ${column_length}" rpy="0 0 0"/>
+    <limit upper="${PI}" lower="0" effort="20" velocity="1"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <parent link="column_link"/>
+    <child link="upper_arm_link"/>
+  </joint>
+
+  <!--///////////////////////////////////////////////////////////////////////-->
+
+  <!-- LOWER ARM LINK -->
+  <link name="lower_arm_link">
+    <visual>
+      <origin xyz="0 0 ${lower_arm_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${lower_arm_dia/2}" length="${lower_arm_length}"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${lower_arm_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${lower_arm_dia/2}" length="${lower_arm_length}"/>
+      </geometry>
+    </collision>
+
+    <xacro:base_inertial mass="${lower_arm_mass}"/>
+  </link>
+
+  <joint name="lower_arm_link_to_upper_arm_link" type="revolute">
+    <origin xyz="0 0 ${upper_arm_length}" rpy="0 0 0"/>
+    <limit upper="${PI}" lower="0" effort="20" velocity="1"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <parent link="upper_arm_link"/>
+    <child link="lower_arm_link"/>
+  </joint>
+
+  <!--///////////////////////////////////////////////////////////////////////-->
+
+  <!-- WRIST ROLL LINK -->
+  <link name="wrist_roll_link">
+    <visual>
+      <origin xyz="0 0 ${wrist_roll_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${wrist_roll_dia/2}" length="${wrist_roll_length}"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${wrist_roll_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${wrist_roll_dia/2}" length="${wrist_roll_length}"/>
+      </geometry>
+    </collision>
+
+    <xacro:base_inertial mass="${wrist_roll_mass}"/>
+  </link>
+
+  <joint name="wrist_roll_link_to_upper_arm_link" type="revolute">
+    <origin xyz="0 0 ${lower_arm_length}" rpy="0 0 0"/>
+    <limit upper="${PI}" lower="${-1*PI}" effort="20" velocity="1"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <parent link="lower_arm_link"/>
+    <child link="wrist_roll_link"/>
+  </joint>
+</robot>

@@ -1,0 +1,5 @@
+chipsy_description
+/home/raghav/chipsy/devel/.private/chipsy_description/cmake.lock /home/raghav/chipsy/devel/./cmake.lock
+/home/raghav/chipsy/devel/.private/chipsy_description/share/chipsy_description/cmake/chipsy_descriptionConfig.cmake /home/raghav/chipsy/devel/share/chipsy_description/cmake/chipsy_descriptionConfig.cmake
+/home/raghav/chipsy/devel/.private/chipsy_description/share/chipsy_description/cmake/chipsy_descriptionConfig-version.cmake /home/raghav/chipsy/devel/share/chipsy_description/cmake/chipsy_descriptionConfig-version.cmake
+/home/raghav/chipsy/devel/.private/chipsy_description/lib/pkgconfig/chipsy_description.pc /home/raghav/chipsy/devel/lib/pkgconfig/chipsy_description.pc
