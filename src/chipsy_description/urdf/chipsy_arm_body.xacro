@@ -40,6 +40,12 @@
   <xacro:property name="wrist_roll_dia" value="0.1"/>
   <xacro:property name="wrist_roll_mass" value="0.1"/>
 
+  <!-- END EFFECTOR -->
+  <!-- along z axis -->
+  <xacro:property name="eef_length" value="0.1"/>
+  <xacro:property name="eef_width" value="0.025"/>
+  <xacro:property name="eef_mass" value="0.025"/>
+
   <xacro:property name="PI" value="3.141592653589793238"/>
 
   <!--///////////////////////////////////////////////////////////////////////-->
@@ -217,5 +223,65 @@
     <axis xyz="0 0 1" rpy="0 0 0"/>
     <parent link="lower_arm_link"/>
     <child link="wrist_roll_link"/>
+  </joint>
+
+  <!--///////////////////////////////////////////////////////////////////////-->
+
+  <!-- RIGHT END EFFECTOR -->
+  <link name="right_eef_link">
+    <visual>
+      <origin xyz="0 0 ${eef_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${eef_width} ${eef_width} ${eef_length}"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${eef_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${eef_width} ${eef_width} ${eef_length}"/>
+      </geometry>
+    </collision>
+
+    <xacro:base_inertial mass="${eef_mass}"/>
+  </link>
+
+  <joint name="right_eef_link_to_wrist_roll_link" type="prismatic">
+    <origin xyz="0 ${wrist_roll_dia/2} ${wrist_roll_length}" rpy="0 0 0"/>
+    <limit upper="${wrist_roll_dia/2-eef_width/2}" lower="${-wrist_roll_dia/2+eef_width/2}" effort="50" velocity="0.05"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <parent link="wrist_roll_link"/>
+    <child link="right_eef_link"/>
+  </joint>
+
+  <!--///////////////////////////////////////////////////////////////////////-->
+
+  <!-- LEFT END EFFECTOR -->
+  <link name="left_eef_link">
+    <visual>
+      <origin xyz="0 0 ${eef_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${eef_width} ${eef_width} ${eef_length}"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${eef_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${eef_width} ${eef_width} ${eef_length}"/>
+      </geometry>
+    </collision>
+
+    <xacro:base_inertial mass="${eef_mass}"/>
+  </link>
+
+  <joint name="left_eef_link_to_wrist_roll_link" type="prismatic">
+    <origin xyz="0 ${-wrist_roll_dia/2} ${wrist_roll_length}" rpy="0 0 0"/>
+    <limit upper="${wrist_roll_dia/2-eef_width/2}" lower="${-wrist_roll_dia/2+eef_width/2}" effort="50" velocity="0.05"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <parent link="wrist_roll_link"/>
+    <child link="left_eef_link"/>
   </joint>
 </robot>
