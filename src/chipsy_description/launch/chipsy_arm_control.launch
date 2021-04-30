@@ -5,11 +5,17 @@
 	<arg name="y" default="0"/>
 	<arg name="z" default="0"/>
 
+  <arg name="conveyor_x" default="2.5"/>
+	<arg name="conveyor_y" default="2.5"/>
+	<arg name="conveyor_z" default="0"/>
+
   <arg name="world_name" default="basic"/>
   <arg name="debug" default="false"/>
   <arg name="gui" default="true"/>
   <arg name="paused" default="false"/>
   <arg name="verbose" default="true"/>
+
+  <arg name="conveyor_file" default="$(find chipsy_description)/models/test_sdf.sdf"/>
 
   <!-- LOAD WORLD -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -22,12 +28,15 @@
   <param name="robot_description" command="$(find xacro)/xacro $(find chipsy_description)/urdf/chipsy_arm_body.xacro"/>
 
   <!-- SPAWN ROBOT -->
-  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+  <node name="spawn_chipsy_arm" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
         args="-urdf -param robot_description -model chipsy_arm -x $(arg x) -y $(arg y) -z $(arg z)"/>
+
+  <!-- SPAWN THE CONVEYOR MODEL -->
+  <node name="spawn_conveyor_belt" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+        args="-sdf -file $(arg conveyor_file) -model conveyor_belt -x $(arg conveyor_x) -y $(arg conveyor_y) -z $(arg conveyor_z)"/>
 
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
     respawn="false" output="screen">
-    <remap from="/joint_states" to="/chipsy_arm/joint_states"/>
   </node>
 
   <node name="rviz" pkg="rviz" type="rviz"/>

@@ -117,8 +117,8 @@ void ConveyorBeltPlugin::OnUpdate()
     // found an incorrect value in childLinkPose within
     // Joint::SetPositionMaximal(). This workaround makes sure that the right
     // numbers are always used in our scenario.
-    const ignition::math::Pose3<double>::Pose3 childLinkPose(1.20997, 2.5998, 0.8126, 0.0, 0.0, -1.57);
-    const ignition::math::Pose3<double>::Pose3 newChildLinkPose(1.20997, 2.98, 0.8126, 0.0, 0.0, -1.57);
+    const ignition::math::Pose3d childLinkPose(1.20997, 2.5998, 0.8126, 0.0, 0.0, -1.57);
+    const ignition::math::Pose3d newChildLinkPose(1.20997, 2.98, 0.8126, 0.0, 0.0, -1.57);
     this->link->MoveFrame(childLinkPose, newChildLinkPose);
   }
 

@@ -68,9 +68,10 @@
     </axis>
   </joint>
 
-  <plugin name="conveyor_belt_plugin" filename="libROSConveyorBeltPlugin.so">
-    <robot_namespace>/ariac</robot_namespace>
+  <plugin name="ROSConveyorBeltPlugin" filename="libROSConveyorBeltPlugin.so">
+    <robot_namespace></robot_namespace>
     <link>conveyor_belt::conveyor_belt_2::belt</link>
     <power>0</power>
-  </plugin
+  </plugin>
+
 </model>
