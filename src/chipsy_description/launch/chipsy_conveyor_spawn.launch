@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="conveyor_x" default="0"/>
+	<arg name="conveyor_y" default="2.5"/>
+	<arg name="conveyor_z" default="0"/>
+
+  <!-- LOAD ROBOT -->
+  <param name="/chipsy_conveyor/robot_description" command="$(find xacro)/xacro $(find chipsy_description)/urdf/chipsy_conveyor.xacro"/>
+
+  <!-- SPAWN ROBOT -->
+  <node name="spawn_chipsy_conveyor" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+        args="-urdf -param robot_description -model chipsy_conveyor -x $(arg conveyor_x) -y $(arg conveyor_y) -z $(arg conveyor_z)"/>
+
+  <!-- PUBLISH THE JOINT STATES -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false" output="screen">
+  </node>
+
+</launch>

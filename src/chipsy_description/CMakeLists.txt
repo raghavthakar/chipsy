@@ -13,11 +13,12 @@ find_package(catkin REQUIRED COMPONENTS
 # Depend on system install of Gazebo
 find_package(gazebo REQUIRED)
 include_directories(${GAZEBO_INCLUDE_DIRS})
-include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS})
+link_directories(${GAZEBO_LIBRARY_DIRS})
+list(APPEND CMAKE_CXX_FLAGS "${GAZEBO_CXX_FLAGS}")
 
 # For model_push
-add_library(ROSConveyorBeltPlugin src/ConveyorBeltPlugin.cc)
-target_link_libraries(ROSConveyorBeltPlugin ${CATKIN_LIBRARIES} ${GAZEBO_LIBRARIES})
+add_library(ConveyorBeltPlugin src/ConveyorBeltPlugin.cc)
+target_link_libraries(ConveyorBeltPlugin ${CATKIN_LIBRARIES} ${GAZEBO_LIBRARIES})
 
 catkin_package(
   DEPENDS

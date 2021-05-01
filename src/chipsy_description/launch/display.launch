@@ -1,6 +1,6 @@
 <launch>
 
-  <arg name="model" default="$(find chipsy_description)/urdf/chipsy_arm_body.xacro"/>
+  <arg name="model" default="$(find chipsy_description)/urdf/chipsy_conveyor.xacro"/>
   <arg name="gui" default="true" />
 
   <param name="robot_description" command="$(find xacro)/xacro $(arg model)"/>

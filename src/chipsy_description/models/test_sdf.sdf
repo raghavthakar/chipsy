@@ -32,4 +32,6 @@
       </visual>
     </link>
   </model>
+
+  <plugin name="ConveyorBeltPlugin" filename="libConveyorBeltPlugin.so"/>
 </sdf>
