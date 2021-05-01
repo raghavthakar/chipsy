@@ -114,6 +114,24 @@
   </plugin>
   </gazebo> -->
 
+  <!-- SKID STEER PLUGIN -->
+  <gazebo>
+    <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
+      <updateRate>100.0</updateRate>
+      <robotNamespace>/chipsy_ugv</robotNamespace>
+      <leftFrontJoint>left_front_wheel_to_base_link</leftFrontJoint>
+      <rightFrontJoint>right_front_wheel_to_base_link</rightFrontJoint>
+      <leftRearJoint>left_back_wheel_to_base_link</leftRearJoint>
+      <rightRearJoint>right_back_wheel_to_base_link</rightRearJoint>
+      <wheelSeparation>0.5</wheelSeparation>
+      <wheelDiameter>0.1</wheelDiameter>
+      <robotBaseFrame>base_link</robotBaseFrame>
+      <torque>5</torque>
+      <commandTopic>cmd_vel</commandTopic>
+      <broadcastTF>false</broadcastTF>
+    </plugin>
+  </gazebo>
+
   <!-- JOINT STATE PUBLISHER -->
   <gazebo>
     <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">

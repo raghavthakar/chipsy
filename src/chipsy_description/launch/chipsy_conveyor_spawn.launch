@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <launch>
-  <arg name="conveyor_x" default="0"/>
-	<arg name="conveyor_y" default="2.5"/>
+  <arg name="conveyor_x" default="0.5"/>
+	<arg name="conveyor_y" default="0"/>
 	<arg name="conveyor_z" default="0"/>
 
   <!-- LOAD ROBOT -->
