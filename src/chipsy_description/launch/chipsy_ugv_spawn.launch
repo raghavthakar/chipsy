@@ -4,13 +4,17 @@
   <arg name="ugv_x" default="-0.5"/>
 	<arg name="ugv_y" default="0"/>
 	<arg name="ugv_z" default="0"/>
+  <arg name="ugv_roll" default="0"/>
+	<arg name="ugv_pitch" default="0"/>
+	<arg name="ugv_yaw" default="3.141592653589793238"/>
 
   <!-- LOAD ROBOT -->
   <param name="/chipsy_ugv/robot_description" command="$(find xacro)/xacro $(find chipsy_description)/urdf/chipsy_ugv.xacro"/>
 
   <!-- SPAWN ROBOT -->
   <node name="spawn_chipsy_ugv" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-        args="-urdf -param robot_description -model chipsy_ugv -x $(arg ugv_x) -y $(arg ugv_y) -z $(arg ugv_z)"/>
+        args="-urdf -param robot_description -model chipsy_ugv -x $(arg ugv_x) -y $(arg ugv_y) -z $(arg ugv_z)
+        -R $(arg ugv_roll) -P $(arg ugv_pitch) -Y $(arg ugv_yaw)"/>
 
   <!-- PUBLISH THE JOINT STATES -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
