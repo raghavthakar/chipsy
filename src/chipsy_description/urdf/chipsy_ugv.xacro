@@ -86,7 +86,7 @@
       </geometry>
       <material name="white"/>
     </visual>
-    <collision>
+    <collision name="base_link_collision">
       <origin xyz="0 0 ${wheel_dia + base_height/2}" rpy="0 0 0"/>
       <geometry>
         <box size="${base_length} ${base_width} ${base_height}"/>
@@ -131,6 +131,19 @@
       <broadcastTF>false</broadcastTF>
     </plugin>
   </gazebo>
+
+  <!-- <gazebo reference="base_link">
+    <sensor type="contact" name="ContactPlugin">
+      <selfCollide>true</selfCollide>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>15.0</updateRate>
+      <material>Gazebo/Red</material>
+      <contact>
+       <collision>base_link_collision</collision>
+      </contact>
+      <plugin name="ContactPlugin" filename="libContactPlugin.so"/>
+    </sensor>
+  </gazebo> -->
 
   <!-- JOINT STATE PUBLISHER -->
   <gazebo>
