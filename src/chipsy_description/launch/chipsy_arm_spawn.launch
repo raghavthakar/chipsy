@@ -5,8 +5,47 @@
 	<arg name="y" default="0"/>
 	<arg name="z" default="0"/>
 
+  <arg name="base_length" default="0.5"/>
+  <arg name="base_width" default="0.5"/>
+  <arg name="base_height" default="0.1"/>
+
+  <arg name="column_length" default="0.25"/>
+  <arg name="column_dia" default="0.2"/>
+
+  <arg name="upper_arm_length" default="0.25"/>
+  <arg name="upper_arm_dia" default="0.1"/>
+
+  <arg name="lower_arm_length" default="0.25"/>
+  <arg name="lower_arm_dia" default="0.1"/>
+
+  <arg name="wrist_roll_length" default="0.05"/>
+  <arg name="wrist_roll_dia" default="0.1"/>
+
+  <arg name="eef_length" default="0.1"/>
+  <arg name="eef_width" default="0.025"/>
+
   <!-- LOAD ROBOT -->
   <param name="/chipsy_arm/robot_description" command="$(find xacro)/xacro $(find chipsy_description)/urdf/chipsy_arm.xacro"/>
+
+  <!-- PUSH THE ARM DETAILS TO PARAM SERVER -->
+  <param name="/chipsy_arm/base_length" value="0.5"/>
+  <param name="/chipsy_arm/base_width" value="0.5"/>
+  <param name="/chipsy_arm/base_height" value="0.1"/>
+
+  <param name="/chipsy_arm/column_length" value="0.25"/>
+  <param name="/chipsy_arm/column_dia" value="0.2"/>
+
+  <param name="/chipsy_arm/upper_arm_length" value="0.25"/>
+  <param name="/chipsy_arm/upper_arm_dia" value="0.1"/>
+
+  <param name="/chipsy_arm/lower_arm_length" value="0.25"/>
+  <param name="/chipsy_arm/lower_arm_dia" value="0.1"/>
+
+  <param name="/chipsy_arm/wrist_roll_length" value="0.05"/>
+  <param name="/chipsy_arm/wrist_roll_dia" value="0.1"/>
+
+  <param name="/chipsy_arm/eef_length" value="0.1"/>
+  <param name="/chipsy_arm/eef_width" value="0.025"/>
 
   <!-- SPAWN ROBOT -->
   <node name="spawn_chipsy_arm" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"

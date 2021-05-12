@@ -136,7 +136,7 @@
 
   <joint name="column_to_base_joint" type="revolute">
     <origin xyz="0 0 ${base_height}" rpy="0 0 0"/>
-    <limit upper="${PI}" lower="${-1*PI}" effort="40" velocity="1"/>
+    <limit upper="${PI}" lower="${-1*PI}" effort="400" velocity="10"/>
     <axis xyz="0 0 1" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="column_link"/>

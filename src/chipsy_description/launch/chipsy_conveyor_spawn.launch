@@ -5,8 +5,17 @@
 	<arg name="conveyor_y" default="0"/>
 	<arg name="conveyor_z" default="0"/>
 
+  <arg name="conveyor_length" default="5"/>
+  <arg name="conveyor_width" default="0.5"/>
+  <arg name="conveyor_height" default="0.1"/>
+
   <!-- LOAD ROBOT -->
   <param name="/chipsy_conveyor/robot_description" command="$(find xacro)/xacro $(find chipsy_description)/urdf/chipsy_conveyor.xacro"/>
+
+  <!-- PUSHING CONVEYOR DETAILS TO PARAMAETER SERVER -->
+  <param name="/chipsy_conveyor/conveyor_length" value="$(arg conveyor_length)"/>
+  <param name="/chipsy_conveyor/conveyor_width" value="$(arg conveyor_width)"/>
+  <param name="/chipsy_conveyor/conveyor_height" value="$(arg conveyor_height)"/>
 
   <!-- SPAWN ROBOT -->
   <node name="spawn_chipsy_conveyor" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"

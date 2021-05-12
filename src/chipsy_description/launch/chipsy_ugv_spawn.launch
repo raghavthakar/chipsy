@@ -8,8 +8,17 @@
 	<arg name="ugv_pitch" default="0"/>
 	<arg name="ugv_yaw" default="3.141592653589793238"/>
 
+  <arg name="ugv_length" default="0.5"/>
+  <arg name="ugv_width" default="0.5"/>
+  <arg name="ugv_height" default="0.1"/>
+
   <!-- LOAD ROBOT -->
   <param name="/chipsy_ugv/robot_description" command="$(find xacro)/xacro $(find chipsy_description)/urdf/chipsy_ugv.xacro"/>
+
+  <!-- PUSHING UGV DETAILS TO PARAMAETER SERVER -->
+  <param name="/chipsy_ugv/ugv_length" value="$(arg ugv_length)"/>
+  <param name="/chipsy_ugv/ugv_width" value="$(arg ugv_width)"/>
+  <param name="/chipsy_ugv/ugv_height" value="$(arg ugv_height)"/>
 
   <!-- SPAWN ROBOT -->
   <node name="spawn_chipsy_ugv" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
