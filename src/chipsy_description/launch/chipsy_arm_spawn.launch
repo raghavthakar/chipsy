@@ -35,10 +35,10 @@
   <param name="/chipsy_arm/column_length" value="0.25"/>
   <param name="/chipsy_arm/column_dia" value="0.2"/>
 
-  <param name="/chipsy_arm/upper_arm_length" value="0.25"/>
+  <param name="/chipsy_arm/upper_arm_length" value="0.4"/>
   <param name="/chipsy_arm/upper_arm_dia" value="0.1"/>
 
-  <param name="/chipsy_arm/lower_arm_length" value="0.25"/>
+  <param name="/chipsy_arm/lower_arm_length" value="0.4"/>
   <param name="/chipsy_arm/lower_arm_dia" value="0.1"/>
 
   <param name="/chipsy_arm/wrist_roll_length" value="0.05"/>

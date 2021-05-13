@@ -21,13 +21,13 @@
 
   <!-- UPPER ARM -->
   <!-- along z axis -->
-  <xacro:property name="upper_arm_length" value="0.25"/>
+  <xacro:property name="upper_arm_length" value="0.4"/>
   <xacro:property name="upper_arm_dia" value="0.1"/>
   <xacro:property name="upper_arm_mass" value="0.5"/>
 
   <!-- LOWER ARM -->
   <!-- along z axis -->
-  <xacro:property name="lower_arm_length" value="0.25"/>
+  <xacro:property name="lower_arm_length" value="0.4"/>
   <xacro:property name="lower_arm_dia" value="0.1"/>
   <xacro:property name="lower_arm_mass" value="0.5"/>
 
@@ -174,7 +174,7 @@
 
   <joint name="upper_arm_to_column_joint" type="revolute">
     <origin xyz="0 0 ${column_length}" rpy="0 0 0"/>
-    <limit upper="${PI}" lower="0" effort="20" velocity="1"/>
+    <limit upper="${PI}" lower="0" effort="100" velocity="1"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
     <parent link="column_link"/>
     <child link="upper_arm_link"/>
@@ -212,7 +212,7 @@
 
   <joint name="lower_arm_to_upper_arm_joint" type="revolute">
     <origin xyz="0 0 ${upper_arm_length}" rpy="0 0 0"/>
-    <limit upper="${PI}" lower="0" effort="20" velocity="1"/>
+    <limit upper="${PI}" lower="0" effort="100" velocity="1"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
     <parent link="upper_arm_link"/>
     <child link="lower_arm_link"/>
