@@ -12,5 +12,3 @@ Make sure to source the workspace!
 
 # Conveyor Belt Plugin For Gazebo-9
 The repository also contains a custom plugin to simulate a coneyor belt in Gazebo-9 in `chipsy_plugins/src`.
-
-`
